@@ -6,29 +6,50 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    
+   <Page.TopAppBar>
+        <AppBar>
+            <Ellipse Height="76" Width="76" Tapped="StartVoiceRecognition_OnClick">
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="microphone.png"/>
+                </Ellipse.Fill>
+            </Ellipse>
+        </AppBar>
+   </Page.TopAppBar>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <ListView x:Name="ProductListView">
+        <!--<StackPanel Height="60" VerticalAlignment="Top" Background="#222021"/>-->
+        <StackPanel x:Name="VoiceStackPanel" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Say the website and the category you want to see!" Margin="0,0,0,10"/>
+            <Ellipse Height="76" Width="76" Tapped="StartVoiceRecognition_OnClick">
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="microphone.png"/>
+                </Ellipse.Fill>
+            </Ellipse>
+           
+        </StackPanel>
+        <ProgressRing x:Name="ProgressRing" Height="100" Width="100"/>
+        <ListView x:Name="ProductListView" Visibility="Collapsed">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                   <StackPanel>
-                       <TextBlock Text="{Binding Name}" 
-                                  Margin="20,0,20,8"
-                                  FontSize="24" 
-                                  FontStyle="Italic" 
-                                  FontWeight="SemiBold"
-                                  Foreground="DarkBlue" />
-                       <StackPanel Orientation="Horizontal">
-                       <TextBlock Text="{Binding Price}" 
-                                  Margin="20,0,20,8"
-                                  FontSize="20"
-                                  Foreground="Black" />
+                    <StackPanel>
+                        <TextBlock Text="{Binding Name}" 
+                                       Margin="20,0,20,8"
+                                       FontSize="24" 
+                                       FontStyle="Italic" 
+                                       FontWeight="SemiBold"
+                                       Foreground="DarkBlue" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Price}" 
+                                           Margin="20,0,20,8"
+                                           FontSize="20"
+                                           Foreground="Black" />
                             <TextBlock Text="€" 
-                                      Margin="20,0,20,8"
-                                      FontSize="20"
-                                      Foreground="Black" />
+                                           Margin="20,0,20,8"
+                                           FontSize="20"
+                                           Foreground="Black" />
 
-                       </StackPanel>
+                        </StackPanel>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
