@@ -12,6 +12,8 @@ namespace CScraper.Models
         private string _name;
         private string _description;
         private double _price;
+        private string _website;
+        private string _image;
         private DateTime _announcedDate;
        
 
@@ -46,6 +48,16 @@ namespace CScraper.Models
             } 
         }
 
+        public string Website
+        {
+            get => _website;
+            set
+            {
+                _website = value;
+                OnPropertyChanged(nameof(Website));
+            }
+        }
+
         public double Price
         {
             get => _price;
@@ -53,6 +65,16 @@ namespace CScraper.Models
             {
               _price = value;
                 OnPropertyChanged(nameof(Price));
+            }
+        }
+
+        public string Image
+        {
+            get => _image;
+            set
+            {
+                _image = value;
+                OnPropertyChanged(nameof(Image));
             }
         }
 

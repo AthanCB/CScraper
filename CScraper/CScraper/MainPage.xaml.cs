@@ -39,16 +39,17 @@ namespace CScraper
 
         
 
-        public async Task GetSmartphonesAsync(string website, string category)
+        public async Task GetSmartphonesAsync(string category)
         {
-            if (website.Equals("scrooge"))
-            {
-                await GetSkroutzSmartPhonesAsync(category);
-            }
-            else if (website.Equals("ebay"))
-            {
+            ProgressRing.IsActive = true;
+            await GetSkroutzSmartPhonesAsync(category);
+            
                 await GetEbaySmartPhonesAsync(category);
-            }
+            
+            
+            ProgressRing.IsActive = false;
+            _products = _products.OrderBy(x => x.Price).ToList();
+            ProductListView.ItemsSource = _products;
         }
 
         private async Task GetSkroutzSmartPhonesAsync(string category)
@@ -62,7 +63,10 @@ namespace CScraper
             {
                 url = "https://www.skroutz.gr/c/25/laptop.html?";
             }
-           
+            else if (category.Equals("TV"))
+            {
+                url = "https://www.skroutz.gr/c/12/television.html";
+            }
 
             var httpClient = new HttpClient();
             var html = await httpClient.GetStringAsync(url);
@@ -75,9 +79,7 @@ namespace CScraper
             
             var ProductListItems = ProductListHtml[0].Descendants("li").ToList();
 
-            ProgressRing.IsActive = true;
-            await Task.Delay(5000);
-            ProgressRing.IsActive = false;
+           
             foreach (var i in ProductListItems)
             {
 
@@ -88,6 +90,8 @@ namespace CScraper
                         .GetAttributeValue("title", "");
                     var price = i.Descendants("a").First(x => x.GetAttributeValue("class", "").Contains("sku-link js-sku-link"))
                         .InnerText.Trim('€');
+                    var pic = i.Descendants("a")
+                        .First(x => x.GetAttributeValue("class", "").Contains("image_link js-sku-link")).LastChild.GetAttributeValue("src","");
                     string temp = price;
                     if (price.Contains('.'))
                     {
@@ -101,9 +105,10 @@ namespace CScraper
                     Product product = new Product();
                     product.Id = Guid.NewGuid().ToString("N");
                     product.Name = name;
+                    product.Website = "../Icons/scrooge.png";
                     product.Price = Double.Parse(newprice);
+                    product.Image = "https://" + pic;
                     _products.Add(product);
-
                 }
                 catch (Exception ex)
                 {
@@ -111,8 +116,7 @@ namespace CScraper
                 }
 
             }
-
-            ProductListView.ItemsSource = _products;
+            
         }
 
         private async Task GetEbaySmartPhonesAsync(string category)
@@ -120,7 +124,7 @@ namespace CScraper
             string url = null;
             if (category.Equals("smartphones"))
             {
-                url = "https://www.skroutz.gr/c/40/kinhta-thlefwna.html";
+                url = "https://www.ebay.co.uk/b/Mobile-and-Smart-Phones/9355/bn_450671";
             }
             else if (category.Equals("laptops"))
             {
@@ -139,9 +143,7 @@ namespace CScraper
 
             var ProductListItems = ProductListHtml[0].Descendants("li").ToList();
 
-            ProgressRing.IsActive = true;
-            await Task.Delay(5000);
-            ProgressRing.IsActive = false;
+            
             foreach (var i in ProductListItems)
             {
 
@@ -151,7 +153,7 @@ namespace CScraper
                         .First(x => x.GetAttributeValue("class", "").Contains("s-item__title")).InnerText.Trim('\t');
                     var price = i.Descendants("span").First(x => x.GetAttributeValue("class", "").Contains("s-item__price"))
                         .InnerText.Trim('£');
-
+                    var pic = i.Descendants("div").First(x => x.GetAttributeValue("class", "").Contains("s-item__image-wrapper")).LastChild.GetAttributeValue("src","");
                     var newprice = Double.Parse(price);
 
 
@@ -159,7 +161,9 @@ namespace CScraper
                     Product product = new Product();
                     product.Id = Guid.NewGuid().ToString("N");
                     product.Name = name;
+                    product.Website = "../Icons/ebay.png";
                     product.Price = Double.Parse(price);
+                    product.Image = pic;
                     _products.Add(product);
 
                 }
@@ -170,7 +174,7 @@ namespace CScraper
 
             }
 
-            ProductListView.ItemsSource = _products;
+            
         }
 
         private async void StartVoiceRecognition_OnClick(object sender, RoutedEventArgs e)
@@ -179,6 +183,7 @@ namespace CScraper
             {
                 VoiceStackPanel.Visibility = Visibility.Collapsed;
                 ProductListView.Visibility = Visibility.Visible;
+                
             }
             else
             {
@@ -195,8 +200,8 @@ namespace CScraper
             {
                 SpeechRecognitionResult speechRecognitionResult = await speechRecognizer.RecognizeWithUIAsync();
 
-                var message = speechRecognitionResult.Text.Split();
-                _website = message[0];
+                var message = speechRecognitionResult.Text;
+                /*_website = message[0];
 
                 if (message.Length < 3)
                 {
@@ -205,9 +210,9 @@ namespace CScraper
                 else if(message.Length == 3)
                 {
                     _category = message[1] + message[2];
-                }
-
-                await GetSmartphonesAsync(_website,_category);
+                }*/
+                _category = message;
+                await GetSmartphonesAsync(_category);
                 
             }
             catch (Exception exception)
@@ -225,6 +230,22 @@ namespace CScraper
             }
             
            
+        }
+
+        private async void SearchButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (VoiceStackPanel.Visibility == Visibility.Visible)
+            {
+                VoiceStackPanel.Visibility = Visibility.Collapsed;
+                MySplitView.Visibility = Visibility.Visible;}
+            else
+            {
+                _products = new List<Product>();
+            }
+
+
+            _category = SearchTextBox.Text;
+            await GetSmartphonesAsync(_category);
         }
     }
 }

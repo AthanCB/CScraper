@@ -11,7 +11,7 @@
     <AssemblyName>CScraper</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.16299.0</TargetPlatformVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17134.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -105,9 +105,30 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="Assets\Roboto-Black.ttf" />
+    <Content Include="Assets\Roboto-BlackItalic.ttf" />
+    <Content Include="Assets\Roboto-Bold.ttf" />
+    <Content Include="Assets\Roboto-BoldItalic.ttf" />
+    <Content Include="Assets\RobotoCondensed-Bold.ttf" />
+    <Content Include="Assets\RobotoCondensed-BoldItalic.ttf" />
+    <Content Include="Assets\RobotoCondensed-Italic.ttf" />
+    <Content Include="Assets\RobotoCondensed-Light.ttf" />
+    <Content Include="Assets\RobotoCondensed-LightItalic.ttf" />
+    <Content Include="Assets\RobotoCondensed-Regular.ttf" />
+    <Content Include="Assets\Roboto-Italic.ttf" />
+    <Content Include="Assets\Roboto-Light.ttf" />
+    <Content Include="Assets\Roboto-LightItalic.ttf" />
+    <Content Include="Assets\Roboto-Medium.ttf" />
+    <Content Include="Assets\Roboto-MediumItalic.ttf" />
+    <Content Include="Assets\Roboto-Regular.ttf" />
+    <Content Include="Assets\Roboto-Thin.ttf" />
+    <Content Include="Assets\Roboto-ThinItalic.ttf" />
     <None Include="CScraper_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="filter.png" />
+    <Content Include="Icons\ebay.png" />
+    <Content Include="Icons\scrooge.png" />
     <Content Include="microphone.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
